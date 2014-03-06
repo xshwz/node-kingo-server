@@ -1,0 +1,44 @@
+extends ../common/base.jade
+
+block title
+  |首页
+
+block body
+  .introduction
+    header.jumbotron
+      .container
+        figure.logo.img-responsive
+          img(src=prefix+'images/xshweb-logo.png' alt='相思湖网站 Logo' width='64')
+        p
+          a(href='http://xsh.gxun.edu.cn/') 相思湖网站
+        h1
+          span 相思
+          |青果
+        a.btn.btn-lg.btn-primary.btn-shadow(href) 进入
+
+    section#functions.jumbotron
+      .container
+        +column('课程', 'Book', ['查看教学计划', '查看课程表', '更直观的显示今日课程'])
+        +column('成绩', 'Clipboard', ['成绩统计', '查看成绩'])
+        +column('考试', 'Pensils', ['查看考试安排'])
+        +column('等级考试', 'Retina-Ready', ['等级考试报名', '查看等级考试成绩'])
+
+    section#responsive.jumbotron
+      .container
+        .col-sm-8
+          h2 响应式设计
+          p.
+            在这里，所有页面都经过响应式设计，
+            这意味着无论在桌面、手机还是平板上访问，都可以获得一致的体验。
+        .col-sm-4.text-center
+          img(src=prefix+'images/responsive-design.jpg' alt='响应式设计')
+
+mixin column(title, icon, functions)
+  section.col-sm-3
+    figure
+      img(src=prefix+'images/icons/'+icon+'.png' alt=title)
+    .description
+      h3=title
+      ul
+        each item in functions
+          li=item

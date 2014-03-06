@@ -1,0 +1,11 @@
+{
+  "main": "index.js",
+  "private": true,
+  "dependencies": {
+    "sails": "~0.9.0",
+    "sails-mongo": "~0.9.0",
+    "jade": "~1.1.0",
+    "grunt": "~0.4.0",
+    "kingo": "~0.1.0"
+  }
+}

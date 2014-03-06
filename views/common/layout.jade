@@ -1,0 +1,62 @@
+extends ../common/base
+
+block body
+  #body
+    aside#side
+      header.side-header
+        h1.appName
+          a(href='/')
+            img(src=prefix+'images/xshweb-logo-white.png' width='32' alt='相思湖网站 Logo' title='相思青果')
+      ul
+        each nav in menu
+          li
+            if nav.name
+              span=nav.name
+            ul
+              each item in nav.items
+                li
+                  a(href=item.url)
+                    span.glyphicon(class='glyphicon-'+item.icon)
+                    =item.label
+
+    #main
+      nav#top-nav
+        button#side-toggle.navbar-toggle(type='button')
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
+        h2.title
+          block title
+      .container
+        block main
+
+  script.
+    (function(){
+      function resize() {
+        $('#side>ul').css('height',
+          $(window).height() - $('.side-header').height());
+      }
+
+      $(window).load(resize).resize(resize);
+
+      function hideSideNavbar() {
+        $('#main').css('left', 0);
+        $('#side').css('left', -200);
+      }
+
+      function showSideNavBar() {
+        $('#main').css('left', 200);
+        $('#side').css('left', 0);
+        $('#side>ul').focus();
+      }
+
+      $('#side-toggle').click(function(){
+        if ($(this).hasClass('on')) {
+          hideSideNavbar();
+          $(this).removeClass('on');
+        } else {
+          showSideNavBar();
+          $(this).addClass('on');
+        }
+      });
+    })();
