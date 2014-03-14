@@ -1,0 +1,31 @@
+include utils
+
+|{{setTitle('登录')}}
+
+form.login-form(method='post' ng-submit='doLogin()' ng-if='!student')
+  .form-group(ng-if='loginError')
+    .alert.alert-danger
+      +icon('exclamation-sign', 'margin-right')
+      |{{loginError}}
+
+  .form-group
+    .input-group
+      label.input-group-addon(for='input-user')
+        +icon('user')
+      input#input-user.form-control(
+        type='text' placeholder='学号' required)
+
+  .form-group
+    .input-group
+      label.input-group-addon(for='input-password')
+        +icon('lock')
+      input#input-password.form-control(
+        type='password' placeholder='密码' required)
+
+  .form-group
+    button#button-submit.btn.btn-primary.btn-block(
+      type='submit' data-loading-text='登录中……') 登录
+
+.alert.alert-success(ng-if='student')
+  +icon('ok', 'margin-right')
+  |你已经成功登录

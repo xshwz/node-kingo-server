@@ -1,0 +1,41 @@
+.screenshot {
+  overflow: auto;
+  white-space: nowrap;
+
+  ul {
+    list-style: none;
+    padding-left: 0;
+
+    li {
+      display: inline-block;
+      margin-right: 10px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      .thumbnail {
+        margin-bottom: 0;
+      }
+
+      @media (max-width: @screen-sm) {
+        img {
+          width: 80px;
+        }
+      }
+    }
+  }
+}
+
+.wechat-header {
+  background-color: #1abc9c;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  border-radius: 6px;
+
+  h3 small {
+    color: #ecf0f1;
+    margin-left: 4px;
+  }
+}

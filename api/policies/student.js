@@ -1,7 +1,7 @@
 module.exports = function(req, res, next) {
-  if (req.session.authenticated) {
+  if (req.session.student) {
     return next();
   }
 
-  res.view('public/login');
+  res.send(403);
 };

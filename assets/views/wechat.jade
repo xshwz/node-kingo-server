@@ -1,0 +1,44 @@
+|{{setTitle('微信')}}
+
+header.wechat-header
+  div
+    img(src='images/wechat-qrcode.jpg' width='200' alt='微信二维码')
+  div
+    h3
+      |相思青果
+      small XshAmsProxy
+
+header.page-header
+  h2 介绍
+p.
+  如果你是一个微信用户，可以关注我们的微信公众号“相思青果”，
+  简单绑定后，即可通过微信向我们的公众号发送指令消息查询课程、成绩等信息。
+  这些功能基于微信公众平台开发模式实现，保证消息的自动及时回复。
+p 同时，我们的公众号也作为与使用者沟通交流的平台，欢迎同学们的交流反馈。
+
+header.page-header
+  h2 使用截图
+.screenshot
+  ul
+    li(ng-repeat='i in _.range(12)')
+      a.thumbnail(href='{{staticFile}}images/screenshots/{{i}}.png')
+        img(width='160' ng-src='{{staticFile}}images/screenshots/thumbnails/{{i}}.png' alt='微信使用截图 {{i}}')
+
+#lightbox.modal.fade.lightbox
+  .modal-dialog
+    .modal-content
+      .lightbox-wrap
+        button.close(type='button' data-dismiss='modal' aria-hidden='true')
+          span.glyphicon.glyphicon-remove-circle
+        img
+
+header.page-header
+  h2 如何绑定
+ol
+  li 查找公众号“相思青果”或扫描二维码
+  li 发送”绑定“系统会回复一条消息
+  li 点击该消息，会跳转到登录页面，成功登录后即可完成绑定
+
+header.page-header
+  h2 支持的指令
+include commands

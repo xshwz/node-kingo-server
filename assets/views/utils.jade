@@ -1,0 +1,5 @@
+mixin icon(iconName, classList)
+  span.glyphicon(class='glyphicon-'+iconName, class=classList)
+
+mixin close(dismiss)
+  button.close(type='button' data-dismiss='alert' aria-hidden='true' title='关闭') &times;

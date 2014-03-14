@@ -1,0 +1,8 @@
+table.table.commands.table-bordered
+  tr
+    th 指令
+    th 描述
+  tr(ng-repeat='command in wechat.commands')
+    td
+      code {{command.name}}
+    td(ng-bind-html='command.description')

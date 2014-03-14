@@ -1,6 +1,3 @@
 module.exports.policies = {
-  '*': 'student',
-  login: {
-    '*': true
-  }
+  'student': 'student'
 };

@@ -1,3 +1,9 @@
+@color-top-bg: #16a085;
+
+body {
+  overflow: hidden;
+}
+
 #body {
   position: absolute;
   width: 100%;
@@ -10,27 +16,6 @@
   position: fixed;
   overflow: hidden;
   background-color: #3d566e;
-
-  .side-header {
-    text-align: center;
-    background-color: #16a085;
-
-    .appName {
-      font-size: 28px;
-      margin: 0;
-      padding: 8px;
-
-      a {
-        display: block;
-        height: 34px;
-      }
-
-      img {
-        position: relative;
-        top: -4px;
-      }
-    }
-  }
 
   /*
   ::-webkit-scrollbar {
@@ -85,7 +70,7 @@
             margin-right: 8px;
           }
 
-          &:hover {
+          &:hover, &.active {
             color: #fff;
             transition: color ease-in-out 0.2s;
           }
@@ -105,9 +90,31 @@
   }
 }
 
+#side-header {
+  text-align: center;
+  background-color: @color-top-bg;
+
+  .appName {
+    font-size: 28px;
+    margin: 0;
+    padding: 8px;
+
+    a {
+      display: block;
+      height: 34px;
+    }
+
+    img {
+      position: relative;
+      top: -4px;
+    }
+  }
+}
+
 #main {
   margin-left: 200px;
   position: relative;
+  overflow: auto;
 
   > .container {
     padding: 72px 20px 40px 20px;
@@ -127,7 +134,7 @@
   height: 50px;
   width: 100%;
   z-index: 999;
-  background-color: #1abc9c;
+  background-color: lighten(@color-top-bg, 4%);
   position: fixed;
   padding-right: 200px;
   color: #fff;
@@ -156,7 +163,7 @@
       color: #fff;
 
       &:hover {
-        background-color: #16a085;
+        background-color: @color-top-bg;
       }
     }
 
