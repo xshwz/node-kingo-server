@@ -1,8 +1,10 @@
 extends base
 
 block body
+  // [if lt IE 9]
   script.
     document.createElement('ng-view');
+  // [endif]
 
   #body
     aside#side
@@ -34,12 +36,8 @@ block body
       .container
         ng-view(onload='onload()')
 
-  script(src='http://cdn.staticfile.org/angular.js/1.2.10/angular.min.js')
-  script(src='http://cdn.staticfile.org/angular.js/1.2.10/angular-route.min.js')
-  script(src='http://cdn.staticfile.org/angular.js/1.2.10/angular-resource.min.js')
-  script(src='http://cdn.staticfile.org/angular.js/1.2.10/angular-sanitize.min.js')
-  script(src='http://cdn.staticfile.org/lodash.js/2.4.1/lodash.min.js')
-  script(src=staticFile+'scripts/app.js')
+  each script in config.scripts.app
+    script(src=script)
 
 mixin icon(iconName)
   span.glyphicon(class='glyphicon-'+iconName)

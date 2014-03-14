@@ -3,30 +3,30 @@ angular.module('kingo', ['ngRoute', 'ngSanitize'])
 .config(['$routeProvider', function ($routeProvider) {
   $routeProvider
     .when('/', {
-      templateUrl: 'views/index.html'
+      templateUrl: 'views/public/index.html'
     })
     .when('/about', {
-      templateUrl: 'views/about.html'
+      templateUrl: 'views/public/about.html'
     })
     .when('/wechat', {
-      templateUrl: 'views/wechat.html'
+      templateUrl: 'views/public/wechat.html'
     })
     .when('/feedback', {
-      templateUrl: 'views/feedback.html'
+      templateUrl: 'views/public/feedback.html'
     })
     .when('/faq', {
-      templateUrl: 'views/faq.html'
+      templateUrl: 'views/public/faq.html'
     })
     .when('/login', {
-      templateUrl: 'views/login.html',
+      templateUrl: 'views/public/login.html',
       controller: LoginController
     })
     .when('/logout', {
-      templateUrl: 'views/login.html',
+      templateUrl: 'views/public/login.html',
       controller: LogoutController
     })
     .when('/student/archives', {
-      templateUrl: 'views/archives.html'
+      templateUrl: 'views/student/archives.html'
     });
 }])
 

@@ -1,19 +1,69 @@
+var fs   = require('fs'),
+    glob = require('glob');
+
 module.exports = function (grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     copy: {
-      main: {
+      images: {
         expand: true,
         cwd: 'assets/',
         src: ['favicon.ico', 'images/**/*'],
         dest: '.tmp/public/'
+      },
+      flat_ui_icons: {
+        flatten: true,
+        expand: true,
+        src: ['bower_components/flat-ui-official/images/icons/png/*.png'],
+        dest: '.tmp/public/images/icons/'
+      },
+      scripts: {
+        flatten: true,
+        expand: true,
+        cwd: 'bower_components/',
+        src: [
+          'jquery/dist/jquery.min.js',
+          'jquery/dist/jquery.min.map',
+          'bootstrap/dist/js/bootstrap.min.js',
+          'html5shiv/dist/html5shiv.js',
+          'respond/dest/respond.min.js',
+          'json5/lib/json5.js',
+          'lodash/dist/lodash.min.js',
+          'angular/angular.min.js',
+          'angular/angular.min.js.map',
+          'angular-resource/angular-resource.min.js',
+          'angular-resource/angular-resource.min.js.map',
+          'angular-route/angular-route.min.js',
+          'angular-route/angular-route.min.js.map',
+          'angular-sanitize/angular-sanitize.min.js',
+          'angular-sanitize/angular-sanitize.min.js.map',
+        ],
+        dest: '.tmp/public/scripts/'
+      },
+      less: {
+        flatten: true,
+        expand: true,
+        src: ['bower_components/bootstrap/less/*.less'],
+        dest: 'assets/styles/bootstrap/'
+      },
+      fonts: {
+        flatten: true,
+        expand: true,
+        src: ['bower_components/bootstrap/fonts/*'],
+        dest: '.tmp/public/fonts/'
       }
     },
     uglify: {
       build: {
         files: {
-          '<%= copy.main.dest %>scripts/app.js': ['assets/scripts/**/*.js']
+          '.tmp/public/scripts/app.min.js': ['.tmp/public/scripts/app.js']
         }
+      }
+    },
+    concat: {
+      build: {
+        src: ['assets/scripts/**/*.js'],
+        dest: '.tmp/public/scripts/app.js'
       }
     },
     less: {
@@ -22,19 +72,34 @@ module.exports = function (grunt) {
       },
       build: {
         files: {
-          '<%= copy.main.dest %>styles/style.css': ['assets/styles/style.less']
+          '.tmp/public/styles/style.css': ['assets/styles/style.less']
         }
       }
     },
     jade: {
       build: {
-        files: require('fs').readdirSync('assets/views/').reduce(
+        files: glob.sync('assets/views/**/*.jade').reduce(
           function (files, file) {
-            var fileName = file.split('.')[0];
-
-            if (file.substr(-5) == '.jade') {
-              files['<%= copy.main.dest %>views/' + fileName + '.html'] =
-                'assets/views/' + fileName + '.jade';
+            files[
+              '.tmp/public/views' +
+              file.replace(/(assets\/views)|(.jade)/g, '') +
+              '.html'] = file;
+            return files;
+          }, {}
+        )
+      }
+    },
+    image_resize: {
+      wechat_screenshots: {
+        options: {
+          width: 160
+        },
+        files: fs.readdirSync('assets/images/wechat-screenshots').reduce(
+          function (files, file) {
+            if (file.substr(-4) == '.png') {
+              files[
+                '.tmp/public/images/wechat-screenshots/thumbnails/' + file
+              ] = 'assets/images/wechat-screenshots/' + file;
             }
 
             return files;
@@ -45,18 +110,18 @@ module.exports = function (grunt) {
     watch: {
       copy: {
         files: ['images/**/*'],
-        tasks: ['copy']
+        tasks: ['copy:images']
       },
-      uglify: {
+      scripts: {
         files: ['assets/scripts/**/*.js'],
-        tasks: ['uglify']
+        tasks: ['concat', 'uglify']
       },
       less: {
         files: ['assets/styles/**/*.less'],
         tasks: ['less']
       },
       jade: {
-        files: ['assets/views/*.jade'],
+        files: ['assets/views/**/*.jade'],
         tasks: ['jade']
       }
     }
@@ -67,8 +132,11 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-jade');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-image-resize');
 
-  grunt.registerTask('build', ['copy', 'uglify', 'less', 'jade']);
+  grunt.registerTask('init', ['copy', 'image_resize']);
+  grunt.registerTask('build', ['concat', 'uglify', 'less', 'jade']);
   grunt.registerTask('default', ['build', 'watch']);
   grunt.registerTask('prod', ['build']);
 };
