@@ -1,4 +1,4 @@
-var fs   = require('fs'),
+var path = require('path'),
     glob = require('glob');
 
 module.exports = function (grunt) {
@@ -94,14 +94,11 @@ module.exports = function (grunt) {
         options: {
           width: 160
         },
-        files: fs.readdirSync('assets/images/wechat-screenshots').reduce(
+        files: glob.sync('assets/images/wechat-screenshots/*.png').reduce(
           function (files, file) {
-            if (file.substr(-4) == '.png') {
-              files[
-                '.tmp/public/images/wechat-screenshots/thumbnails/' + file
-              ] = 'assets/images/wechat-screenshots/' + file;
-            }
-
+            files[
+              '.tmp/public/images/wechat-screenshots/thumbnails/' +
+              path.basename(file)] = file;
             return files;
           }, {}
         )
