@@ -104,18 +104,20 @@ body {
 #main {
   margin-left: 200px;
   position: relative;
-  overflow: auto;
+  overflow: hidden;
 
   > .container {
-    padding: 72px 20px 40px 20px;
+    padding: 20px;
+    margin-top: 50px;
     width: 100%;
+    overflow: auto;
   }
 
   @media (max-width: @screen-sm) {
     margin-left: 0;
 
     > .container {
-      padding: 72px 16px 40px 16px;
+      padding: 16px;
     }
   }
 }

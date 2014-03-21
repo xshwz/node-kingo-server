@@ -1,0 +1,1 @@
+document.createElement('ng-view');

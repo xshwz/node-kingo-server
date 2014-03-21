@@ -5,10 +5,14 @@ module.exports = function (grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     copy: {
-      images: {
+      assets: {
         expand: true,
         cwd: 'assets/',
-        src: ['favicon.ico', 'images/**/*'],
+        src: [
+          'favicon.ico',
+          'images/**/*.+(gif|jpg|png)',
+          'scripts/**/*.js'
+        ],
         dest: '.tmp/public/'
       },
       flat_ui_icons: {
@@ -22,6 +26,7 @@ module.exports = function (grunt) {
         expand: true,
         cwd: 'bower_components/',
         src: [
+          'requirejs/require.js',
           'jquery/dist/jquery.min.js',
           'jquery/dist/jquery.min.map',
           'bootstrap/dist/js/bootstrap.min.js',
@@ -56,14 +61,9 @@ module.exports = function (grunt) {
     uglify: {
       build: {
         files: {
-          '.tmp/public/scripts/app.min.js': ['.tmp/public/scripts/app.js']
+          '.tmp/public/scripts/json5.min.js': ['.tmp/public/scripts/json5.js'],
+          '.tmp/public/scripts/require.min.js': ['.tmp/public/scripts/require.js']
         }
-      }
-    },
-    concat: {
-      build: {
-        src: ['assets/scripts/**/*.js'],
-        dest: '.tmp/public/scripts/app.js'
       }
     },
     less: {
@@ -90,7 +90,7 @@ module.exports = function (grunt) {
       }
     },
     image_resize: {
-      wechat_screenshots: {
+      screenshots: {
         options: {
           width: 160
         },
@@ -104,14 +104,49 @@ module.exports = function (grunt) {
         )
       }
     },
+    requirejs: {
+      compile: {
+        options: {
+          baseUrl: '.tmp/public/scripts/app',
+          paths: {
+            'lodash': '../lodash.min',
+            'jquery': '../jquery.min',
+            'twitter-bootstrap': '../bootstrap.min',
+            'angular': '../angular.min',
+            'angular-sanitize': '../angular-sanitize.min',
+            'angular-route': '../angular-route.min',
+            'angular-resource': '../angular-resource.min',
+          },
+          shim: {
+            'jquery': {
+              exports : 'jquery'
+            },
+            'lodash': {
+              exports : '_'
+            },
+            'angular': {
+              exports : 'angular'
+            },
+            'angular-sanitize': {
+              deps:['angular']
+            },
+            'angular-route': {
+              deps: ['angular']
+            }
+          },
+          include: ['jquery', 'twitter-bootstrap'],
+          name: 'main',
+          out: '.tmp/public/scripts/app.js',
+        }
+      }
+    },
     watch: {
       copy: {
-        files: ['images/**/*'],
-        tasks: ['copy:images']
-      },
-      scripts: {
-        files: ['assets/scripts/**/*.js'],
-        tasks: ['concat', 'uglify']
+        files: [
+          'assets/images/**/*.+(gif|jpg|png)',
+          'assets/scripts/**/*.js'
+        ],
+        tasks: ['copy:assets']
       },
       less: {
         files: ['assets/styles/**/*.less'],
@@ -129,11 +164,11 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-jade');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-image-resize');
 
   grunt.registerTask('init', ['copy', 'image_resize']);
-  grunt.registerTask('build', ['concat', 'uglify', 'less', 'jade']);
+  grunt.registerTask('build', ['uglify', 'less', 'jade', 'requirejs']);
   grunt.registerTask('default', ['build', 'watch']);
   grunt.registerTask('prod', ['build']);
 };

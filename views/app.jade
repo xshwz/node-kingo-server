@@ -1,26 +1,20 @@
 extends base
 
 block body
-  // [if lt IE 9]
-  script.
-    document.createElement('ng-view');
-  // [endif]
-
   #body
     aside#side
       header#side-header
         h1.appName
           a(href='/')
-            img(src=staticFile+'images/xshweb-logo-white.png' width='32' alt='相思湖网站 Logo' title='相思青果')
+            img(src='images/xshweb-logo-white.png' width='32' alt='相思湖网站 Logo' title='相思青果')
       ul
         li(ng-repeat='group in menu')
           span(ng-if='group.name') {{group.name}}
           ul
             li(ng-repeat='item in group.items')
-              a.active(href='#/{{item.url}}' ng-if='item.url == $location.path().substr(1)')
-                +linkItem()
-              a(href='#/{{item.url}}' ng-if='item.url != $location.path().substr(1)')
-                +linkItem()
+              a(href='#/{{item.url}}' ng-class='{active: item.url == getCurrentPath()}')
+                span.glyphicon(class='glyphicon-{{item.icon}}')
+                |{{item.label}}
 
     #main
       nav#top-nav
@@ -34,14 +28,6 @@ block body
             a(href='#/logout' ng-if='student') 退出
             a(href='#/login' ng-if='!student && $location.path() != "/login"') 登录
       .container
-        ng-view(onload='onload()')
+        ng-view(onload='sidebar.reset()')
 
-  each script in config.scripts.app
-    script(src=script)
-
-mixin icon(iconName)
-  span.glyphicon(class='glyphicon-'+iconName)
-
-mixin linkItem()
-  +icon('{{item.icon}}')
-  |{{item.label}}
+  script(src='scripts/require.min.js' data-main='scripts/app/dev')
