@@ -29,6 +29,7 @@ module.exports = function (grunt) {
           'requirejs/require.js',
           'jquery/dist/jquery.min.js',
           'jquery/dist/jquery.min.map',
+          'jquery-cookie/jquery.cookie.js',
           'bootstrap/dist/js/bootstrap.min.js',
           'html5shiv/dist/html5shiv.js',
           'respond/dest/respond.min.js',
@@ -36,12 +37,10 @@ module.exports = function (grunt) {
           'lodash/dist/lodash.min.js',
           'angular/angular.min.js',
           'angular/angular.min.js.map',
-          'angular-resource/angular-resource.min.js',
-          'angular-resource/angular-resource.min.js.map',
           'angular-route/angular-route.min.js',
           'angular-route/angular-route.min.js.map',
           'angular-sanitize/angular-sanitize.min.js',
-          'angular-sanitize/angular-sanitize.min.js.map',
+          'angular-sanitize/angular-sanitize.min.js.map'
         ],
         dest: '.tmp/public/scripts/'
       },
@@ -62,7 +61,8 @@ module.exports = function (grunt) {
       build: {
         files: {
           '.tmp/public/scripts/json5.min.js': ['.tmp/public/scripts/json5.js'],
-          '.tmp/public/scripts/require.min.js': ['.tmp/public/scripts/require.js']
+          '.tmp/public/scripts/require.min.js': ['.tmp/public/scripts/require.js'],
+          '.tmp/public/scripts/jquery.cookie.min.js': ['.tmp/public/scripts/jquery.cookie.js']
         }
       }
     },
@@ -80,10 +80,9 @@ module.exports = function (grunt) {
       build: {
         files: glob.sync('assets/views/**/*.jade').reduce(
           function (files, file) {
-            files[
-              '.tmp/public/views' +
-              file.replace(/(assets\/views)|(.jade)/g, '') +
-              '.html'] = file;
+            files['.tmp/public/views' +
+                  file.replace(/(assets\/views)|(\.jade)/g, '') +
+                  '.html'] = file;
             return files;
           }, {}
         )
@@ -96,9 +95,8 @@ module.exports = function (grunt) {
         },
         files: glob.sync('assets/images/wechat-screenshots/*.png').reduce(
           function (files, file) {
-            files[
-              '.tmp/public/images/wechat-screenshots/thumbnails/' +
-              path.basename(file)] = file;
+            files['.tmp/public/images/wechat-screenshots/thumbnails/' +
+                  path.basename(file)] = file;
             return files;
           }, {}
         )
@@ -111,15 +109,18 @@ module.exports = function (grunt) {
           paths: {
             'lodash': '../lodash.min',
             'jquery': '../jquery.min',
+            'jquery-cookie': '../jquery.cookie.min',
             'twitter-bootstrap': '../bootstrap.min',
             'angular': '../angular.min',
             'angular-sanitize': '../angular-sanitize.min',
-            'angular-route': '../angular-route.min',
-            'angular-resource': '../angular-resource.min',
+            'angular-route': '../angular-route.min'
           },
           shim: {
             'jquery': {
               exports : 'jquery'
+            },
+            'jquery-cookie': {
+              deps : ['jquery']
             },
             'lodash': {
               exports : '_'
@@ -128,15 +129,15 @@ module.exports = function (grunt) {
               exports : 'angular'
             },
             'angular-sanitize': {
-              deps:['angular']
+              deps: ['angular']
             },
             'angular-route': {
               deps: ['angular']
             }
           },
-          include: ['jquery', 'twitter-bootstrap'],
+          include: ['jquery', 'jquery-cookie', 'twitter-bootstrap'],
           name: 'main',
-          out: '.tmp/public/scripts/app.js',
+          out: '.tmp/public/scripts/app.js'
         }
       }
     },
@@ -169,6 +170,6 @@ module.exports = function (grunt) {
 
   grunt.registerTask('init', ['copy', 'image_resize']);
   grunt.registerTask('build', ['uglify', 'less', 'jade', 'requirejs']);
-  grunt.registerTask('default', ['build', 'watch']);
+  grunt.registerTask('default', ['build']);
   grunt.registerTask('prod', ['build']);
 };

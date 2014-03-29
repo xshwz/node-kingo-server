@@ -27,6 +27,26 @@ define(['app'], function (app) {
       .when('/student/archives', {
         templateUrl: 'views/student/archives.html'
       })
+      .when('/student/effective_scores', {
+        templateUrl: 'views/student/effective_scores.html',
+        controller: 'effective_scores'
+      })
+      .when('/student/original_scores', {
+        templateUrl: 'views/student/original_scores.html',
+        controller: 'original_scores'
+      })
+      .when('/student/scores_stats', {
+        templateUrl: 'views/student/scores_stats.html',
+        controller: 'scores_stats'
+      })
+      .when('/student/today_courses', {
+        templateUrl: 'views/student/today_courses.html',
+        controller: 'today_courses'
+      })
+      .when('/student/curriculum', {
+        templateUrl: 'views/student/curriculum.html',
+        controller: 'curriculum'
+      })
       .otherwise({
         redirectTo: '/'
       });

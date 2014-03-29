@@ -1,25 +1,30 @@
 module.exports = {
   info: function (req, res) {
-    var menu = sails.config.menu.common;
+    var menu    = sails.config.menu.common,
+        student = null;
 
     if (req.session.student) {
       menu = _.union(sails.config.menu.student, menu);
       if (req.session.student.isAdmin) {
         menu = _.union(menu, sails.config.menu.admin);
       }
+
+      var student = {
+        sid: req.session.student.sid,
+        fields: sails.config.student.fields
+      }
     }
 
     res.send({
-      student: req.session.student,
+      student: student,
       menu: menu,
-      staticFile: sails.config.staticFile,
       wechat: sails.config.wechat,
       appName: sails.config.appName
     });
   },
   doLogin: function (req, res) {
     var kingo = new (require('kingo'))({baseUrl: sails.config.kingoUrl}),
-        sid   = req.param('sid');
+        sid   = req.param('sid'),
         pwd   = req.param('pwd');
 
     kingo.login(sid, pwd, function (error, result) {

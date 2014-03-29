@@ -1,32 +1,28 @@
-var load = require('./load');
+var glob        = require('glob'),
+    path        = require('path'),
+    kingo       = require('kingo'),
+    actionsPath = path.dirname(__dirname) +  '/actions/student/',
+    controller  = {};
 
-module.exports = {
-  index: function (req, res) {
-    res.send('hello');
-  },
-  archives: function (req, res) {
-    var student = req.session.student;
+glob.sync(actionsPath + '*.js').forEach(function (file) {
+  var actionName = path.basename(file).replace('.js', '');
 
-    if (student.archives) {
-      res.send(student.archives);
-    } else {
-      load.student(req, function (error, student) {
-        var kingo    = load.kingo(req),
-            archives = {};
+  controller[actionName] = function (req, res) {
+    Student.findOne({sid: req.session.student.sid}, function (error, student) {
+      if (req.method == 'GET' && student[actionName]) {
+        res.send(student[actionName]);
+      } else {
+        var _kingo = new kingo({
+              baseUrl: sails.config.kingoUrl}, req.session.kingoSession);
 
-        kingo.getArchives(function (error, _archives) {
-          _.merge(archives, _archives);
-          kingo.getArchivesFromGradeExam(function (error, _archives) {
-            _.merge(archives, _archives);
-            kingo.getRegistrations(function (error, registrations) {
-              _.merge(archives, registrations.pop());
-              res.send(archives);
-              student.archives = archives;
-              student.save(function () {});
-            });
-          });
+        require(file)(_kingo, function (error, data) {
+          student[actionName] = data;
+          student.save(function () {});
+          res.send(data);
         });
-      });
-    }
-  }
-};
+      }
+    });
+  };
+});
+
+module.exports = controller;

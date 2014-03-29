@@ -26,7 +26,7 @@ block body
         ul.links
           li
             a(href='#/logout' ng-if='student') 退出
-            a(href='#/login' ng-if='!student && $location.path() != "/login"') 登录
+            a(href='#/login' ng-if='!student && getCurrentPath() != "login"') 登录
       .container
         ng-view(onload='sidebar.reset()')
 

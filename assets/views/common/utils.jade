@@ -3,3 +3,26 @@ mixin icon(iconName, classList)
 
 mixin close(dismiss)
   button.close(type='button' data-dismiss='alert' aria-hidden='true' title='关闭') &times;
+
+mixin table(data)
+  table.table
+    thead
+      tr
+        th(ng-repeat='(key, value) in ' + data + '[0]') {{key}}
+    tbody
+      tr(ng-repeat='row in '+data)
+        td(ng-repeat='item in row') {{item}}
+
+mixin scores_accordion(scores)
+  #accordion.panel-group
+    .panel.panel-primary(ng-repeat='semester in ' + scores)
+      .panel-heading
+        .panel-title
+          a(href='#{{semester.semester}}'
+            data-parent='#accordion'
+            data-toggle='collapse') {{semester.semester}}
+      .panel-collapse.collapse(
+        id='{{semester.semester}}' ng-class='{in: $last}')
+        .panel-body
+          .table-responsive
+            +table('semester.scores')

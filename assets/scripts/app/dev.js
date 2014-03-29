@@ -2,11 +2,11 @@ require.config({
   paths: {
     'lodash': '../lodash.min',
     'jquery': '../jquery.min',
+    'jquery-cookie': '../jquery.cookie.min',
     'twitter-bootstrap': '../bootstrap.min',
     'angular': '../angular.min',
     'angular-sanitize': '../angular-sanitize.min',
-    'angular-route': '../angular-route.min',
-    'angular-resource': '../angular-resource.min'
+    'angular-route': '../angular-route.min'
   },
   shim: {
     'lodash': {
@@ -14,6 +14,9 @@ require.config({
     },
     'jquery': {
       exports : 'jquery'
+    },
+    'jquery-cookie': {
+      deps : ['jquery']
     },
     'twitter-bootstrap': {
       deps: ['jquery']
@@ -27,12 +30,9 @@ require.config({
     },
     'angular-route': {
       deps: ['angular']
-    },
-    'angular-resource': {
-      deps: ['angular']
     }
   },
-  deps: ['jquery', 'twitter-bootstrap']
+  deps: ['jquery', 'jquery-cookie', 'twitter-bootstrap']
 });
 
 require(['angular', 'modules/routes', 'init'], function (angular) {
